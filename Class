@@ -1,0 +1,19 @@
+
+public class ZipCode 
+{
+	private int zipCode;
+	public ZipCode(int z)
+	{
+		this.zipCode=z;
+	}
+	
+	public String toString()
+	{
+		String string=""+zipCode;
+		while(string.length()<5)
+		{
+			string="0"+string;
+		}
+		return string;
+	}
+}
