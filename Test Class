@@ -31,11 +31,11 @@ public class ZipCodeTest {
 	public void testCheckDigit()
 	{
 		ZipCode z1=new ZipCode(17257);
-		assertEquals(0,z1.toString());
+		assertEquals(8,z1.getCheckDigit());
 		ZipCode z2=new ZipCode(12340);
-		assertEquals(1,z2.toString());
+		assertEquals(0,z2.getCheckDigit());
 		ZipCode z3=new ZipCode(13242);
-		assertEquals(0,z3.toString());
+		assertEquals(8,z3.getCheckDigit());
 	}
 
 }
