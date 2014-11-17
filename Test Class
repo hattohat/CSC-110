@@ -34,8 +34,16 @@ public class ZipCodeTest {
 		assertEquals(8,z1.getCheckDigit());
 		ZipCode z2=new ZipCode(12340);
 		assertEquals(0,z2.getCheckDigit());
-		ZipCode z3=new ZipCode(13242);
-		assertEquals(8,z3.getCheckDigit());
+		ZipCode z3=new ZipCode(13241);
+		assertEquals(9,z3.getCheckDigit());
+	}
+	
+	
+	@Test
+	public void testBarCode()
+	{
+		ZipCode z1 = new ZipCode(17257);
+		assertEquals("|'''|||'''|''|'|'|'|'|'''||''|'|", z1.getBarCode());
 	}
 
 }
