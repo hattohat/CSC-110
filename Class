@@ -1,0 +1,102 @@
+
+public class ZipCode 
+{
+	private int[] zipCode=new int[5];
+	private static final String[] CODE = 
+		{"||'''",
+		"'''||",
+		"''|'|",
+		"''||'",
+		"'|''|",
+		"'|'|'",
+		"'||''",
+		"|'''|",
+		"|''|'",
+		"|'|''"};
+	public ZipCode(int z)
+	{
+		for(int i=zipCode.length-1;i>=0;i--)
+		{
+			int num=z%10;
+			z=(int)z/10;
+			this.zipCode[i]=num;
+		}
+	}
+	
+	public String toString()
+	{
+		String string = zipCodeIntoString();
+		return string;
+	}
+
+	private String zipCodeIntoString() {
+		String string="";
+		for(int i=0;i<zipCode.length;i++)
+		{
+			string+=zipCode[i];
+		}
+		return string;
+	}
+
+	public int getCheckDigit() 
+	{
+		String string = zipCodeIntoString();
+		int sum=0;
+		for(int i=0;i<string.length();i++)
+		{
+			sum+=(int)(string.charAt(i));
+		}
+		int checkDigit=0;
+		sum=sum%10;
+		if(sum==0)
+		{
+			checkDigit=0;
+		}else
+		{
+			checkDigit=10-sum;
+		}
+		return checkDigit;
+	}
+
+	public String getBarCode() 
+	{
+		String barCode="|";
+		for(int i=0;i<zipCode.length;i++)
+		{
+			barCode+=CODE[zipCode[i]];
+		}
+		barCode+=CODE[getCheckDigit()]+"|";
+		return barCode;
+	}
+	
+	public ZipCode(String barCode) throws ZipCodeException
+	{
+		if(barCode.length()<32)
+		{
+			throw new ZipCodeException("Your zip code is too short!! Make it Longer!!");
+		}
+		if(barCode.length()>32)
+		{
+			throw new ZipCodeException("Your zip code is too long!! Make it Shorter!!");
+		}
+		if((!barCode.substring(0,1).equals("|"))||(!barCode.substring(32).equals("|")))
+		{
+			throw new ZipCodeException("Your framing bits are not right!! Remember you need | on either side");
+		}
+		int beg=1;
+		int end=6;
+		for(int i=0;i<zipCode.length;i++)
+		{
+			String pieceOfBarCode=barCode.substring(beg,end);
+			beg=end;
+			end=end+5;
+			for(int j=0;j<CODE.length;j++)
+			{
+				if(pieceOfBarCode.equals(CODE[j]))
+				{
+					zipCode[i]=j;
+				}
+			}
+		}
+	}
+}
