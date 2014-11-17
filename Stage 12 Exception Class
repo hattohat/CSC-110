@@ -1,0 +1,19 @@
+/**
+ * Exceptions caused by invalid zip codes
+ * @author hattohat
+ *
+ */
+public class ZipCodeException extends Exception
+{
+	private String message;
+	
+	public ZipCodeException(String string)
+	{
+		this.message=string;
+	}
+	
+	public String toString()
+	{
+		return message;
+	}
+}
