@@ -1,4 +1,9 @@
 
+/**
+ * A class to check the value a zip code that is entered in either form
+ * @author ef7292
+ *
+ */
 public class ZipCode 
 {
 	private int[] zipCode=new int[5];
@@ -13,14 +18,24 @@ public class ZipCode
 		"|'''|",
 		"|''|'",
 		"|'|''"};
-	public ZipCode(int z)
+	/**
+	 * this creates the ZipCode class if the zipcode is given as a number
+	 * @param z
+	 * @throws ZipCodeException
+	 */
+	public ZipCode(int z) throws ZipCodeException
 	{
+		if(z>99999)
+		{
+			throw new ZipCodeException("Your zip code is to long!! 5 digits, not that hard!!");
+		}
 		for(int i=zipCode.length-1;i>=0;i--)
 		{
 			int num=z%10;
 			z=(int)z/10;
 			this.zipCode[i]=num;
 		}
+	
 	}
 	
 	public String toString()
@@ -38,6 +53,10 @@ public class ZipCode
 		return string;
 	}
 
+	/**
+	 * this finds and gives back the check digit value
+	 * @return checkDigit
+	 */
 	public int getCheckDigit() 
 	{
 		String string = zipCodeIntoString();
@@ -58,6 +77,10 @@ public class ZipCode
 		return checkDigit;
 	}
 
+	/**
+	 * this returns the bar code value for the class
+	 * @return barCode
+	 */
 	public String getBarCode() 
 	{
 		String barCode="|";
@@ -69,6 +92,11 @@ public class ZipCode
 		return barCode;
 	}
 	
+	/**
+	 * This builds the zipCode class if it is given as a bar code
+	 * @param barCode
+	 * @throws ZipCodeException
+	 */
 	public ZipCode(String barCode) throws ZipCodeException
 	{
 		if(barCode.length()<32)
@@ -79,7 +107,7 @@ public class ZipCode
 		{
 			throw new ZipCodeException("Your zip code is too long!! Make it Shorter!!");
 		}
-		if((!barCode.substring(0,1).equals("|"))||(!barCode.substring(32).equals("|")))
+		if((!barCode.substring(0,1).equals("|"))||(!barCode.substring(31).equals("|")))
 		{
 			throw new ZipCodeException("Your framing bits are not right!! Remember you need | on either side");
 		}
@@ -88,6 +116,18 @@ public class ZipCode
 		for(int i=0;i<zipCode.length;i++)
 		{
 			String pieceOfBarCode=barCode.substring(beg,end);
+			int k=0;
+			for(int j=0;j<CODE.length;j++)
+			{
+				if(pieceOfBarCode.equals(CODE[j]));
+				{
+					k++;
+				}
+			}
+			if(k==0)
+			{
+				throw new ZipCodeException("Your parity was off fix it!!!");
+			}
 			beg=end;
 			end=end+5;
 			for(int j=0;j<CODE.length;j++)
@@ -97,6 +137,25 @@ public class ZipCode
 					zipCode[i]=j;
 				}
 			}
+		}
+		int sum=0;
+		for(int i=0;i<zipCode.length;i++)
+		{
+			sum+=zipCode[i];
+		}
+		int b=0;
+		for(int a=0;a<CODE.length;a++)
+		{
+			String pieceOfBarCode=barCode.substring(beg,end);
+			if(pieceOfBarCode.equals(CODE[a]))
+			{
+				b=a;
+			}
+		}
+		sum+=b;
+		if(sum%10!=0)
+		{
+			throw new ZipCodeException("Your check bit is off!! Fix it!!");
 		}
 	}
 }
