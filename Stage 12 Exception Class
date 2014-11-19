@@ -1,6 +1,6 @@
 /**
  * Exceptions caused by invalid zip codes
- * @author hattohat
+ * @author ef7292
  *
  */
 public class ZipCodeException extends Exception
