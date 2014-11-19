@@ -1,13 +1,21 @@
 import static org.junit.Assert.*;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 
+/**
+ * This tests the ZipCode class to make sure it works under a number of ways
+ * @author ef7292
+ *
+ */
 public class ZipCodeTest {
 
+	/**
+	 * Tests a simple value stored into the class
+	 * @throws ZipCodeException
+	 */
 	@Test
-	public void testIntializationSimple() 
+	public void testIntializationSimple() throws ZipCodeException
 	{
 		ZipCode z1=new ZipCode(17257);
 		assertEquals("17257",z1.toString());
@@ -17,8 +25,12 @@ public class ZipCodeTest {
 		assertEquals("01234",z3.toString());
 	}
 	
+	/**
+	 * test a more complex value being stored in the class
+	 * @throws ZipCodeException
+	 */
 	@Test
-	public void testIntializationComplex()
+	public void testIntializationComplex() throws ZipCodeException
 	{
 		ZipCode z1 = new ZipCode(123);
 		assertEquals("00123",z1.toString());
@@ -28,8 +40,12 @@ public class ZipCodeTest {
 		assertEquals("00001",z3.toString());
 	}
 	
+	/**
+	 * tests that the class is giving back the correct check digit
+	 * @throws ZipCodeException
+	 */
 	@Test
-	public void testCheckDigit()
+	public void testCheckDigit() throws ZipCodeException
 	{
 		ZipCode z1=new ZipCode(17257);
 		assertEquals(8,z1.getCheckDigit());
@@ -40,14 +56,22 @@ public class ZipCodeTest {
 	}
 	
 	
+	/**
+	 * test the initialization of the second constructor
+	 * @throws ZipCodeException
+	 */
 	@Test
-	public void testBarCode()
+	public void testBarCode() throws ZipCodeException
 	{
 		ZipCode z1 = new ZipCode(17257);
 		assertEquals("|'''|||'''|''|'|'|'|'|'''||''|'|", z1.getBarCode());
 	}
 	
 	
+	/**
+	 * tests that the class is able to decode a simple value
+	 * @throws ZipCodeException
+	 */
 	@Test
 	public void testDecodeSingleDigit() throws ZipCodeException
 	{
@@ -55,6 +79,10 @@ public class ZipCodeTest {
 		assertEquals("10000", z.toString());
 	}
 
+	/**
+	 * tests that the class can decode the entire bar code
+	 * @throws ZipCodeException
+	 */
 	@Test
 	public void testDecode() throws ZipCodeException
 	{
@@ -62,15 +90,63 @@ public class ZipCodeTest {
 		assertEquals("17257", z.toString());
 	}
 	
+	/**
+	 * test that the exception work when the barcode is too short
+	 * @throws ZipCodeException
+	 */
 	@Test(expected=ZipCodeException.class)
 	public void testTooShort() throws ZipCodeException
 	{
 		ZipCode z = new ZipCode("|'''|||''|''|'|'|'|'|'''||''|'|");
 	}
 	
+	/**
+	 * test that the exception work when the barcode is too long
+	 * @throws ZipCodeException
+	 */
 	@Test(expected=ZipCodeException.class)
 	public void testTooLong() throws ZipCodeException
 	{
 		ZipCode z = new ZipCode("|'''|||'''||''|'|'|'|'|'''||''|'|");
+	}
+	
+	/**
+	 * test that the exception work when the barcode's framing bits are off
+	 * @throws ZipCodeException
+	 */
+	@Test(expected=ZipCodeException.class)
+	public void testFramingBits() throws ZipCodeException
+	{
+		ZipCode z = new ZipCode("''''|||'''|''|'|'|'|'|'''||''|''");
+	}
+	
+	/**
+	 * test that the exception work when the barcode's parity bits are off
+	 * @throws ZipCodeException
+	 */
+	@Test(expected=ZipCodeException.class)
+	public void testParity() throws ZipCodeException
+	{
+		ZipCode z = new ZipCode("|||'|||'''|''|'|'|'|'|'''||''|'|");
+	}
+	
+	/**
+	 * test that the exception work when the barcode's check digit is off
+	 * @throws ZipCodeException
+	 */
+	@Test(expected=ZipCodeException.class)
+	public void testCheckDigitBarCode() throws ZipCodeException
+	{
+		ZipCode z = new ZipCode("|'''|||'''|''|'|'|'|'|'''||'|''|");
+	}
+	
+	/**
+	 * test that the exception work when the zip code is too long
+	 * @throws ZipCodeException
+	 */
+	@Test(expected=ZipCodeException.class)
+	public void testZipCodeTooLong() throws ZipCodeException
+	{
+		ZipCode z = new ZipCode(539726);
 	}
 }
