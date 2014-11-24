@@ -1,0 +1,23 @@
+/**
+ * 
+ * @author ef7292
+ *
+ */
+public class Zombie extends LifeForm
+{
+	public Zombie(int i) 
+	{
+		this.originalLP=i;
+		this.lp=i;
+	}
+
+	public void recover()
+	{
+		if(lp!=0)
+		{
+			int recoverable=originalLP-lp;
+			this.lp=lp+(int)(recoverable*.1);
+		}
+	}
+
+}
