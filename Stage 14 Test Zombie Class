@@ -1,0 +1,67 @@
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+
+public class ZombieTest extends TestLifeForm
+{
+
+	/**
+	 * Zombies just have life points at creation
+	 */
+	@Test
+	public void testCreation() 
+	{
+		LifeForm deadFred=new Zombie(50);
+		assertEquals(50, deadFred.getLifePoints());
+	}
+	
+
+	/**
+	 * Can you kill them?
+	 */
+	@Test
+	public void testTakeHitTilDeath()
+	{
+		LifeForm deadFred=new Zombie(50);
+		int weaponDamage=50;
+		for(int i=0;i<50;i++)
+		{
+			deadFred.takeHit(weaponDamage);
+		}
+		assertEquals(0,deadFred.getLifePoints());
+	}
+	
+	/**
+	 * Can he recover?
+	 */
+	@Test
+	public void testRecover()
+	{
+		int originalLife=50;
+		Zombie deadFred=new Zombie(originalLife);
+		deadFred.takeHit(30);
+		int newLifePoints=(deadFred.getLifePoints());
+		int recoverable=originalLife-newLifePoints;
+		deadFred.recover();
+		assertEquals((int)((recoverable*.1)+newLifePoints), deadFred.getLifePoints());
+	}
+	
+	/**
+	 * Why go simple when we can be right?
+	 */
+	@Test
+	public void testRecoverBorderCases()
+	{
+		int originalHealth=50;
+		int weaponStrength=50;
+		Zombie deadFred = new Zombie(originalHealth);
+		for(int i=0;i<50;i++)
+		{
+			deadFred.takeHit(weaponStrength);
+		}
+		assertEquals(0,deadFred.getLifePoints());
+		deadFred.recover();
+		assertEquals(0,deadFred.getLifePoints());
+	}
+}
