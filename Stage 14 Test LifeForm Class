@@ -1,0 +1,46 @@
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+
+public class TestLifeForm {
+
+
+	/**
+	 * The zombie should lose life points matching the
+	 * strength of a hit when it is whacked. The number
+	 * of life points subtracting should be uniformly
+	 * distributed between 0 and the strength of the weapon.
+	 */
+	@Test
+	public void hitsHurtRandomly() {
+		int originalHealth=50;
+		int weaponStrength=5;
+		int[] damage = new int[weaponStrength+1];
+		int numberOfHits=10000;
+		for(int i=0;i<numberOfHits;i++)
+		{
+			LifeForm deadFred = createLifeForm(originalHealth);
+			deadFred.takeHit(weaponStrength);
+			damage[originalHealth-deadFred.getLifePoints()]++;
+		}
+		
+		int hitsPerDamage= numberOfHits/(weaponStrength+1);
+		int epsilon=(int)(hitsPerDamage*.15);
+		for(int i=0;i<damage.length;i++)
+		{
+			assertTrue("not enough examples of damage = "+i,
+					(hitsPerDamage-epsilon)<damage[i]);
+			assertTrue("too many examples of damage = "+i,
+					(hitsPerDamage+epsilon)>damage[i]);
+		}
+	}
+
+	/**
+	 * Create a life form appropriate to the subclass we are testing
+	 * @param points the number of life points the life form should
+	 * be given
+	 * @return the new object
+	 */
+
+}
