@@ -1,0 +1,27 @@
+public class LifeForm {
+
+	protected int originalLP;
+	protected int lp;
+
+	public LifeForm() 
+	{
+		super();
+	}
+
+	public int getLifePoints() 
+	{
+		return lp;
+	}
+
+	public void takeHit(int i) 
+	{
+		double damageReal=Math.random()*(i+1);
+		int damage=(int)Math.floor(damageReal);
+		this.lp=lp-damage;
+		if(lp<0)
+		{
+			this.lp=0;
+		}
+	}
+
+}
